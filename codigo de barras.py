@@ -24,8 +24,6 @@ import time
 time.sleep (5)
 pyautogui.click(x=642, y=410)
 pyautogui.write (usuario)
-#pyautogui.click(x=934, y=445)
-#pyautogui.click(x=660, y=444)
 pyautogui.press("tab") 
 pyautogui.write(senha)
 pyautogui.press ("enter")

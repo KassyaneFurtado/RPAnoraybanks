@@ -2,7 +2,7 @@ import pandas
 import pandas as pd
 
 # Leitura do arquivo CSV
-tabela = pd.read_csv("casosgbmcerta.csv")  # Certifique-se de fornecer a extensão correta do arquivo, como ".csv"
+tabela = pd.read_csv("casos.csv")  # Certifique-se de fornecer a extensão correta do arquivo, como ".csv"
 
 # Exibindo a tabela original
 print("Tabela Original:")
@@ -20,5 +20,5 @@ for coluna in colunas_para_converter:
 print("\nTabela após a Conversão:")
 print(tabela)
 
-# Salvar a tabela de volta para um novo arquivo CSV se necessário
-tabela.to_csv("casosgbmcerta_converted.csv", index=False)
+# Salvar a tabela de volta para um novo arquivo CSV 
+tabela.to_csv("casos_converted.csv", index=False)
