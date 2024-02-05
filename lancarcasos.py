@@ -7,7 +7,7 @@ usuario = input("Insira seu usuário: ")
 senha = input("Insira sua senha: ")
 link = input("Insira o link do sistema: ")
 
-pyautogui.PAUSE = 2
+pyautogui.PAUSE = 1
 pyautogui.press("win")
 pyautogui.write ("microsoft edge")
 pyautogui.press("enter")
@@ -80,6 +80,9 @@ for linha in tabela.index:
     pyautogui.click(x=652, y=439)
     time.sleep(5)
     pyautogui.scroll(1000)
+    pyautogui.click(x=612, y=231)
+    pyautogui.click(x=518, y=276)
+    time.sleep(3)
     pyautogui.click(x=495, y=420)
     pyautogui.write(tabela.loc[linha,"NOME1"]) #escrever o primeiro nome
     pyautogui.click(x=915, y=417)
@@ -101,7 +104,7 @@ for linha in tabela.index:
     pyautogui.click(x=688, y=450)
     time.sleep(5)
     pyautogui.click(x=255, y=332)  #doações
-    time.sleep(3)
+    time.sleep(5)
     pyautogui.click(x=1061, y=283)
     if not pandas.isnull(tabela.loc[linha, "DATADECOLETA_converted"]):
         pyautogui.write(str(tabela.loc[linha,"DATADECOLETA_converted"]))
@@ -127,3 +130,4 @@ for linha in tabela.index:
     pyautogui.scroll(20000)
     pyautogui.click(x=136, y=196)
     time.sleep(3)
+    

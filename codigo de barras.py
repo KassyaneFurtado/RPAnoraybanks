@@ -30,32 +30,32 @@ pyautogui.press("tab")
 pyautogui.write(senha)
 pyautogui.press ("enter")
 time.sleep (2) 
-pyautogui.click(x=125, y=190)
-pyautogui.click(x=127, y=227)
+pyautogui.click(x=57, y=197) #clicar em amostras
+pyautogui.click(x=110, y=226) #clicar em consulta
+time.sleep(5)
 #importar base de dados
-tabela = pandas.read_csv("amostras.csv")
+tabela = pandas.read_csv("AMOSTRACONTROLEMAMA.csv")
 print(tabela)
 for linha in tabela.index:
-    #CODAMOSTRANB = tabela[coluna] for coluna in tabela.columns
     codigo = tabela.loc[linha,"CODAMOSTRANB"]
-    pyautogui.click(x=918, y=501)
+    pyautogui.click(x=918, y=501)#clicar para escrever o código da amostra
     time.sleep(2)
-    pyautogui.write(tabela.loc[linha,"CODAMOSTRANB"])
+    pyautogui.write(tabela.loc[linha,"CODAMOSTRANB"]) 
     pyautogui.press("enter")
     time.sleep (2)
     pyautogui.scroll(-1000)
-    pyautogui.click (x=278, y=456)
-    time.sleep(3)
+    pyautogui.click (x=278, y=456) #clicar para editar amostra
+    time.sleep(8)
     pyautogui.scroll(-500)
-    pyautogui.click(x=472, y=404)
+    pyautogui.click(x=472, y=404) #clicar para escrever codigo de barras
     pyautogui.write(tabela.loc[linha,"CODAMOSTRANB"])
     pyautogui.scroll(-500)
-    pyautogui.click(x=443, y=627)
+    pyautogui.click(x=443, y=627) #clicar para salvar
     time.sleep(5)
     pyautogui.click(x=676, y=442)
+    time.sleep(10)
     pyautogui.scroll(1000)
     pyautogui.click(x=127, y=227)
     time.sleep(2)
     pyautogui.click(x=79, y=234)
     time.sleep(4)
-
