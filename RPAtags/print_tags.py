@@ -1,6 +1,6 @@
 import pyautogui
 import pandas
-
+#OPCIONAL O RPA PODE FAZER LOGIN NO SISTEMA OU VOCÊ JÁ PODE DEIXAR NA PÁGINA
 usuario = input("Insira seu usuário: ")
 senha = input("Insira sua senha: ")
 link = input("Insira o link do sistema: ")
@@ -39,7 +39,7 @@ for linha in tabela.index:
     # x=918, y=290 controles ginecologia
     # x=960, y=341 controles mastologia
     # x=950, y=360 tumor colo uterino
-    # x=1000, y=369 tumor colo retal
+    # =x=995, y=313 tumor colo retal
     # x=1050, y=387 tumor de mama
     # x=1050, y=404 tumor de ovario
     # x=1046, y=416 tumor de prostata

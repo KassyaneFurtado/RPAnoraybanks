@@ -4,4 +4,4 @@ import pyautogui
 time.sleep(5)
 print(pyautogui.position())
 
-# pyautogui.scroll(1000)
+pyautogui.scroll(-1000)

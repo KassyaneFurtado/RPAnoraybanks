@@ -1,9 +1,9 @@
+#ADICIONAR OU CONVERTER 0 A ESQUERDA EM NÚMEROS
 import pandas
 import pandas as pd
 
 # Leitura do arquivo CSV
-tabela = pd.read_csv("casos.csv")  # Certifique-se de fornecer a extensão correta do arquivo, como ".csv"
-
+tabela = pd.read_csv("casos.csv")  
 # Exibindo a tabela original
 print("Tabela Original:")
 print(tabela)
