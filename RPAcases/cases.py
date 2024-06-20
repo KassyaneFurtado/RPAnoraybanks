@@ -8,8 +8,6 @@ import pandas as pd
 senha = input("Insira sua senha: ")
 link = input("Insira o link do sistema: ")'''
 
-pyautogui.PAUSE = 2
-#SERVE PARA DEIXAR A AUTOMAÇÃO MAIS LENTA PARA VER O PROCESSO ACONTECER
 ''' pyautogui.press("win")
 pyautogui.write ("microsoft edge")
 pyautogui.press("enter")
@@ -22,15 +20,15 @@ pyautogui.write (usuario)
 pyautogui.press("tab") # digitar senha
 pyautogui.write(senha)
 pyautogui.press ("enter")'''
+
+pyautogui.PAUSE = 2
+#SERVE PARA DEIXAR A AUTOMAÇÃO MAIS LENTA PARA VER O PROCESSO ACONTECER
 time.sleep (2)
 pyautogui.click(x=69, y=158) #casos
 pyautogui.click(x=87, y=198) #registro de casos
 time.sleep(5)
-#CONVERTER DATADECOLETA"
-# Leitura do arquivo CSV
-tabela = pd.read_csv("CASOS.csv")  
-# Exibindo a tabela original
-print("Tabela Original:")
+#CONVERTER DATADECOLETA
+tabela = pd.read_csv("CASES.csv")  
 print(tabela)
 # Lista de colunas a serem convertidas
 colunas_para_converter = ["DATADECOLETA", "DATANASCIMENTO"]
@@ -42,7 +40,7 @@ for coluna in colunas_para_converter:
 print("\nTabela após a Conversão:")
 print(tabela)
 # Salvar a tabela de volta para um novo arquivo CSV se necessário
-tabela.to_csv("CASOS_converted.csv", index=False)
+tabela.to_csv("CASES_converted.csv", index=False)
 
 for linha in tabela.index:
     pyautogui.click(x=456, y=220) #grupo
