@@ -1,124 +1,135 @@
-# O QUE O CÓDIGO DEVE FAZER:
-#LANÇAR AS AMOSTRAS, PARA ISSO SÃO OS SEGUINTES PASSOS:
-#PROCURAR PELO CASO
-    #ONCOLOGIA
-        # TIPO DE CASO
-            #PRONTUÁRIO
-#EDITAR CASO
-#EDITAR DOAÇÃO
-#AMOSTRAS
-    #TIPO DE AMOSTRA:
-        # 1
-        # 2
-        # 3
-        # 4
-        # 5
-        # 6
-        # 7
-        # 8
-        # 9
-        # 10
-        # 11
-        # 12
-            #QUANTIDADE DE AMOSTRA
-            #STATUS DA AMOSTRA
-            #DATA DA AMOSTRA
-            #RESPONSÁVEL
-            #CÓDIGO DE ENTRADA (CASO)
-            #OBS
-            #CÓDIGO DE BARRAS
-            #SALVAR 
-            #IMPRIMIR ETIQUETA
-        # ANEXAR DOCUMENTOS (TECIDO)
-
-import pyautogui
 import time
+from playwright.sync_api import sync_playwright
+from dotenv import load_dotenv
+import os
 import pandas as pd
+import pyautogui
 
-time.sleep(5)
-pyautogui.PAUSE = 2
-pyautogui.click(x=99, y=157) #CLICAR EM CASOS
-pyautogui.click(x=78, y=267) #CONSULTA DE CASOS
-time.sleep(5)
-pyautogui.click(x=501, y=285) #CLICAR EM GRUPO
-pyautogui.click(x=505, y=324) #ONCOLOGIA
-time.sleep(5)
-pyautogui.click(x=1128, y=278) #CLICAR EM COLEÇÃO
-sample = pd.read_csv('SAMPLE.csv')
+load_dotenv()
+login = os.getenv('LOGIN')
+password = os.getenv('PASSWORD')
+sample = pd.read_csv("SAMPLE.csv")
 positions = pd.read_csv('POSITIONS.csv')
-print("SAMPLE.csv")
-print("POSITIONS.csv")
+print(sample)
+print(positions)
 
-# Verificar se as colunas 'X' e 'Y' existem na planilha POSITIONS.csv
-if 'X' not in positions.columns or 'Y' not in positions.columns:
-    raise KeyError("A coluna 'X' ou 'Y' não foi encontrada na planilha POSITIONS.csv")
-
-# Iterar sobre os números na coluna 'TIPOC' da planilha SAMPLE.csv
-for number in sample['TIPOC']:
-    # Procurar o número na coluna 'TIPO' da planilha POSITIONS.csv
-    position = positions[positions['TIPO'] == number]
+with sync_playwright() as p:
+    navegador = p.chromium.launch(headless=False, args=['--ignore-certificate-errors'])
+    noraybanks = navegador.new_page()
+    noraybanks.goto("https://noraybanks.mariopenna.org.br/InternalLoginNew.aspx")
+    noraybanks.wait_for_selector('//*[@id="nbCtrlLoginNew1_LoginUser_UserName"]')
+    time.sleep(5)
+    noraybanks.fill('//*[@id="nbCtrlLoginNew1_LoginUser_UserName"]',login) #LOGIN
+    noraybanks.wait_for_selector('//*[@id="nbCtrlLoginNew1_LoginUser_Password"]')
+    noraybanks.fill('//*[@id="nbCtrlLoginNew1_LoginUser_Password"]', password ) #SENHA
+    noraybanks.locator('//*[@id="nbCtrlLoginNew1_LoginUser_LoginButton_jqbtn"]').click()
     
-    # Verificar se a posição foi encontrada
-    if not position.empty:
-        x = position['X'].values[0]
-        y = position['Y'].values[0]
-        
-        # Realizar o clique na posição encontrada
-        print(f"Clicando em: X = {x}, Y = {y}")
-        pyautogui.click(x, y)
-    else:
-        print(f"Posição não encontrada para o número {number}")
-time.sleep(5) #(retirar)
-pyautogui.click(x=1491, y=372) #CLICAR EM PRONTUÁRIO (retirar)
-pyautogui.write()
-pyautogui.click(x=268, y=672) #CLICAR EM BUSCAR
-time.sleep(10)
-pyautogui.click(x=279, y=751) #CLICAR EM EDITAR CASO
-pyautogui.scroll(-20000)
-pyautogui.click(x=286, y=592) #EDITAR DOAÇÃO
-time.sleep(10)
-pyautogui(x=274, y=1000) #CLICAR EM AMOSTRAS
-pyautogui.click(x=600, y=482)
-#INCLUIR UM FUNÇÃO IF
-# SE O TIPO DA AMOSTRAS FOR "1" ENTÃO CLICAR NA POSIÇÃO TAL
-#PEGAR AS POSIÇÕES PARA ADIDIONAR NO ARQUIVO POSITIONS.csv
-#TIPO DE AMOSTRA:
-        # 1 Lavado Peritoneal
-        # 2 Leucócitos
-        # 3 Líquido Ascítico
-        # 4 Líquido Ascítico Biorepositório
-        # 5 Plasma Citrato
-        # x=600, y=482 - 6 Plasma EDTA 
-        # 7 Sangue Citrato
-        # 8 Sangue EDTA
-        # 9 Tecido Normal Congelado	
-        # 10 Tecido Normal Parafina
-        # 11 Tecido Tumoral Congelado
-        # 12 Tecido Tumoral Parafina
-time.sleep(5)
-pyautogui.click(x=811, y=359) #CLICAR EM ADICIONAR AMOSTRAS
-time.sleep(5)
-pyautogui.click(x=460, y=538) #CLICAR EM DATA ENTRADA
-pyautogui.write()
-pyautogui.click(x=464, y=712) #ML
-pyautogui.write()
-pyautogui.click(x=460, y=837) #CLICAR EM DATA DA AMOSTRA
-pyautogui.write()
-time.sleep(5)
-pyautogui.click(x=585, y=874) #CLICAR EM RESPONSÁVEL
-pyautogui.click(x=597, y=926) #SELECIONA O RESPONSÁVEL
-pyautogui.click(x=1545, y=731) #CLICAR EM STATUS DA AMOSTRA
-pyautogui.click(x=1536, y=769) #SELECIONA STATUS DISPONÍVEL
-pyautogui.click(x=1487, y=807) #CLICAR EM CÓDIGO DE ENTRADA
-pyautogui.write()
-#INCLUIR FUNÇÃO IF 
-# SE O CAMPO NÃO ESTIVER VAZIO CLICAR E ESCREVER
-pyautogui.click(x=493, y=910)
-pyautogui.write()
-pyautogui.scroll(-500)
-pyautogui.click(x=559, y=953)
-#IMPRIMIR ETIQUETAS
-#ANEXAR DOCS A DEPENDER DO TIPO DE AMOSTRA
+    for linha in sample.index:
+        noraybanks.wait_for_selector('//*[@id="wrapper-250"]/ul/li[1]/a')
+        noraybanks.locator('//*[@id="wrapper-250"]/ul/li[1]/a').click() #CASOS 
+        noraybanks.wait_for_selector('//*[@id="wrapper-250"]/ul/li[1]/ul/li[3]/a/span')
+        noraybanks.locator('//*[@id="wrapper-250"]/ul/li[1]/ul/li[3]/a/span').click() #CONSULTA
+        time.sleep(5)
+        noraybanks.locator('//*[@id="nbConsulta1_NbCtrlBiobancoNodo1_ddListBiobanco"]').select_option('1')
+        time.sleep(5)
+       
+        if not positions.empty:
+            number = sample.loc[linha, 'TIPOC']
+            position = positions[positions['TIPO'] == number]
+            print(f"Processando número: {number}")
+            print(position)
+        # Obter o XPath do locador
+            xpath = position.iloc[0]['LOCADOR']
+        # Selecionar a opção no menu suspenso
+            print(f"XPath selecionado: {xpath}")
+            time.sleep(5)
+            print(f"Selecionando a opção: {number} com XPath: {xpath}")
+            time.sleep(5)
+            noraybanks.locator('//*[@id="nbConsulta1_NbCtrlBiobancoNodo1_ddListNodo"]').click()
+            noraybanks.locator('//*[@id="nbConsulta1_NbCtrlBiobancoNodo1_ddListNodo"]').select_option(value=str(number))  # Supondo que a opção seja um valor string
+        else:
+            print(f"Posição não encontrada para o número {number}")
+            time.sleep(2)
+
+        if not pd.isnull(sample.loc[linha, "PRONTUARIO"]):
+            noraybanks.wait_for_selector('//*[@id="nbConsulta1_TxtCodigoUnico"]')
+            noraybanks.locator('//*[@id="nbConsulta1_TxtCodigoUnico"]').click()
+            prontuario = str(int(sample.loc[linha, "PRONTUARIO"]))
+            noraybanks.fill('//*[@id="nbConsulta1_TxtCodigoUnico"]', prontuario)
+
+        noraybanks.locator('//*[@id="btnFiltro_jqbtn"]').click()
+        noraybanks.wait_for_selector('//*[@id="GridList_ctl02_ImgbtnMod"]')
+        noraybanks.locator('//*[@id="GridList_ctl02_ImgbtnMod"]').click()
+        noraybanks.wait_for_selector('//*[@id="GridDonacion_ctl02_ImgbtnMod"]')
+        noraybanks.locator('//*[@id="GridDonacion_ctl02_ImgbtnMod"]').click()
+        noraybanks.locator('//*[@id="BtnMuestras_jqbtn"]').click()
+        noraybanks.locator('//*[@id="DDListTipoM"]').click()
+        number = sample.loc[linha, 'TIPOA']
+        position = positions[positions['TIPO'] == number]
+        if not positions.empty:
+            number = sample.loc[linha, 'TIPOC']
+            position = positions[positions['TIPO'] == number]
+            print(f"Processando número: {number}")
+            print(position)
+        # Obter o XPath do locador
+            xpath = position.iloc[0]['LOCADOR']
+        # Selecionar a opção no menu suspenso
+            print(f"XPath selecionado: {xpath}")
+            time.sleep(10)
+            print(f"Selecionando a opção: {number} com XPath: {xpath}")
+            time.sleep(10)
+            noraybanks.locator('//*[@id="DDListTipoM"]').click()
+            noraybanks.locator('//*[@id="DDListTipoM"]').select_option(value=str(number))  # Supondo que a opção seja um valor string
+        else:
+            print(f"Posição não encontrada para o número {number}")
+            time.sleep(20)
+        noraybanks.wait_for_selector('//*[@id="BtnNewMuestra_jqbtn"]')        
+        noraybanks.locator('//*[@id="BtnNewMuestra_jqbtn"]').click() #ADICIONAR AMOSTRA
+        time.sleep(5)
+        noraybanks.wait_for_selector('//*[@id="TxtCodMuestra"]')
+        codbarras = noraybanks.query_selector('//*[@id="TxtCodMuestra"]').input_value() #COPIAR COD DE AMOSTRA
+        time.sleep(1)
+        noraybanks.wait_for_selector('//*[@id="TxtCodEntrada"]')
+        noraybanks.locator('//*[@id="TxtCodEntrada"]').click()
+        noraybanks.query_selector('//*[@id="TxtCodEntrada"]').fill(codbarras) #ESCREVER COD DE BARRAS
+        time.sleep(1)
+        noraybanks.wait_for_selector('//*[@id="TxtFechaEntrada"]')
+        noraybanks.locator('//*[@id="TxtFechaEntrada"]').click()
+        DATA = str(int(sample.loc[linha, "DATA"])) 
+        noraybanks.fill('//*[@id="TxtFechaEntrada"]', DATA) #DATA DE ENTRADA
+        time.sleep(1)
+        noraybanks.wait_for_selector('//*[@id="TxtVolumen"]')
+        noraybanks.locator('//*[@id="TxtVolumen"]').click()
+        VOLUME = str(int(sample.loc[linha, "VOLUME"]))
+        noraybanks.fill('//*[@id="TxtVolumen"]', VOLUME) #VOLUME
+        time.sleep(1)
+        noraybanks.wait_for_selector('//*[@id="txtFechaObt"]')
+        noraybanks.locator('//*[@id="txtFechaObt"]')                             
+        noraybanks.fill('//*[@id="txtFechaObt"]', DATA) #DATA DA AMOSTRA
+        time.sleep(10)
+        noraybanks.wait_for_selector('//*[@id="DDListEstadoMuetra"]')
+        noraybanks.locator('//*[@id="DDListEstadoMuetra"]').select_option('2') #STATUS AMOSTRA
+        time.sleep(1)
+        CASO = str(int(sample.loc[linha, "CASO"]))
+        noraybanks.wait_for_selector('//*[@id="TxtCodEntrada"]')
+        noraybanks.locator('//*[@id="TxtCodEntrada"]').click()
+        noraybanks.fill('//*[@id="TxtCodEntrada"]', CASO) #COD DE ENTRADA
+        time.sleep(1)
+        noraybanks.locator('//*[@id="DDListResponsable"]').click()
+        noraybanks.locator('//*[@id="DDListResponsable"]/option[3]').click()
+        time.sleep(1)
+        if not pd.isnull(sample.loc[linha, "OBS"]):
+            noraybanks.locator('//*[@id="TxtObs1"]').click()
+            OBS = str(int(sample.loc[linha, "OBS"]))
+            noraybanks.fill('//*[@id="TxtObs1"]', OBS)
+        noraybanks.locator('//*[@id="btnSave_jqbtn"]/span[1]') #SALVAR
+        noraybanks.locator('//*[@id="btnImprimirEtiquetasTL_jqbtn"]').click() #IMPRESSÃO DIRETA
+        noraybanks.locator('//*[@id="nbctrlImprimirEtiquetas1_ddListLabelDesign"] ').click() #ESCOLHER DESING DA ETIQUETA
+        #noraybanks.locator('')
+        time.sleep(5)
+        #pyautogui.click(x=412, y=653)
+        noraybanks.locator('//*[@id="Header1_NbCurrentProfile1_ButtonLogOut_jqbtn"]').click()
+        navegador.close()
 
 
 
