@@ -1,20 +1,18 @@
-import pyautogui
 import time
-import pandas
-import pandas as pd
 from playwright.sync_api import sync_playwright
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
+import pandas as pd
+import pyautogui
 import utils
 import navegador
-from formulario import preencheCampo
-import planilha
+import RPA.load_data as load_data
 
 load_dotenv()
 login = os.getenv('LOGIN')
 password = os.getenv('PASSWORD')
-sample = planilha.carregaAmostras()
-positions = planilha.carregaPosicoes()
+sample = load_data.carregaAmostras()
+positions = load_data.carregaPosicoes()
 
 #ABRINDO O NAVEGADOR 
 with sync_playwright() as p:
@@ -24,16 +22,16 @@ with sync_playwright() as p:
 
     try:
         for linha in sample.index:
-            noraybanks.wait_for_selector('#wrapper-250')
-            noraybanks.locator('#wrapper-250').click()  
-            noraybanks.wait_for_selector('#wrapper-250')
-            noraybanks.locator('#wrapper-250').click() 
+            noraybanks.wait_for_selector('#wrapper-250 > ul > li.opt1 > a')
+            noraybanks.locator('#wrapper-250 > ul > li.opt1 > a').click()  
+            noraybanks.wait_for_selector('#wrapper-250 > ul > li.opt1 > ul > li.opt100 > a > span')
+            noraybanks.locator('#wrapper-250 > ul > li.opt1 > ul > li.opt100 > a > span').click() 
             time.sleep(5)
             noraybanks.locator('#NbCtrlBiobancoNodo1_ddListBiobanco').select_option('1')
             time.sleep(5)
-            noraybanks.waint_for_selector('#NbCtrlBiobancoNodo1_ddListNodo')
+            noraybanks.wait_for_selector('#NbCtrlBiobancoNodo1_ddListNodo')
             noraybanks.locator('#NbCtrlBiobancoNodo1_ddListNodo').click()
-            number = planilha.pegaDado(sample, 'TIPOC', linha)
+            number = load_data.pegaDado(sample, 'TIPOC', linha)
             position = positions[positions['TIPO'] == number]
             print(f"Processando número: {number}")
             print(position)
@@ -41,20 +39,19 @@ with sync_playwright() as p:
             xpath = position.iloc[0]['LOCADOR']
             # Selecionar a opção no menu suspenso
             print(f"XPath selecionado: {xpath}")
-            print(f"Selecionando a opção: {number} com XPat
-                      h: {xpath}")
+            print(f"Selecionando a opção: {number} com XPath: {xpath}")
             time.sleep(3)
             noraybanks.wait_for_event
-            noraybanks.query_selector('#nbConsulta1_NbCtrlBiobancoNodo1_ddListNodo').select_option(str(xpath))
+            noraybanks.query_selector('#NbCtrlBiobancoNodo1_ddListNodo').select_option(str(xpath))
             time.sleep(2)
             #DIGITAR PRONTUÁRIO
-            prontuario = planilha.carregaAmostras.loc[linha,"PRONTUARIO"]
+            prontuario = load_data.carregaAmostras.loc[linha,"PRONTUARIO"]
             noraybanks.waint_for_selector('#TxtCodDonante')
             noraybanks.locator('#TxtCodDonante').click()
             prontuario = str(int(sample.loc[linha, "PRONTUARIO"]))
             noraybanks.fill('#TxtCodDonante', prontuario)
             #SELECIONAR TIPO DE PACIENTE
-            noraybanks.locator('#DDListEspecie').select_option('2') #ADD TIPO DE PACIENTE NA PLANILHA DE CASOS PACIENTE -2 CONTROLE -1
+            noraybanks.locator('#DDListEspecie').select_option('2') 
             #SELECIONAR CAMPO DE DADOS PESSOAIS
             noraybanks.locator('#checkBoxDatosFiliacion').click()
             #SALVAR DADOS

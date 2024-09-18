@@ -1,4 +1,5 @@
 import time
+import os
 from os import getenv
 
 def fazLogin(noraybanks):
@@ -11,4 +12,5 @@ def fazLogin(noraybanks):
     noraybanks.wait_for_selector('#nbCtrlLoginNew1_LoginUser_Password')
     noraybanks.fill('#nbCtrlLoginNew1_LoginUser_Password', password) #SENHA
     noraybanks.locator('#nbCtrlLoginNew1_LoginUser_LoginButton_jqbtn').click()
-    time.sleep()
+    time.sleep(5)
+

@@ -1,3 +1,5 @@
+import os
+from os import getenv
 def criaNavegador(playwright):
     sitenoraybanks = os.getenv('NORAYBANKS')
 

@@ -1,4 +1,6 @@
-from pandas import read_csv
+import pandas as pd
+planilha = pd.read_csv("CASES.csv")
+sample = pd.read_csv("SAMPLE.csv")
 
 def carregaCasos():
     return read_csv('CASES.csv')
@@ -7,6 +9,4 @@ def carregaAmostras():
 
 def carregaPosicoes():
     return read_csv('POSITIONS.csv')
-
-def pegaDado(planilha, nomeColuna, linha):
-    return planilha.loc[linha, nomeColuna]
+    
