@@ -31,10 +31,14 @@ with sync_playwright() as p:
             selectCaseType(noraybanks, samples, positions, line)
             searchRecord(noraybanks, samples, line)
             selectSampleType(noraybanks, samples, positions, line)
+            
             time.sleep(5)
+            
             noraybanks.wait_for_selector('#NbctrlPopup1_ButtonOk_jqbtn')
             noraybanks.locator('#NbctrlPopup1_ButtonOk_jqbtn').click()
+            
             time.sleep(7)
+            
             pyautogui.scroll(2000)
             noraybanks.wait_for_selector('#wrapper-250')
 
