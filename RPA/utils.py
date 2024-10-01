@@ -1,7 +1,7 @@
 import os
 from os import getenv
-def criaNavegador(playwright):
-    sitenoraybanks = os.getenv('NORAYBANKS')
+def createBrowser(playwright):
+    sitenoraybanks = os.getenv('NORAYBANKS_URL')
 
     navegador = playwright.chromium.launch(headless=False, args=['--ignore-certificate-errors'])
     noraybanks = navegador.new_page()

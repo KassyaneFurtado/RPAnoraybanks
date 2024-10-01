@@ -11,14 +11,14 @@ import RPA.load_data as load_data
 load_dotenv()
 login = os.getenv('LOGIN')
 password = os.getenv('PASSWORD')
-sample = load_data.carregaAmostras()
-positions = load_data.carregaPosicoes()
+sample = load_data.loadSamples()
+positions = load_data.loadPositions()
 
 #ABRINDO O NAVEGADOR 
 with sync_playwright() as p:
-    noraybanks = utils.criaNavegador(p)
+    noraybanks = utils.createBrowser(p)
 
-    navegador.fazLogin(noraybanks)
+    navegador.login(noraybanks)
 
     try:
         for linha in sample.index:
@@ -45,7 +45,7 @@ with sync_playwright() as p:
             noraybanks.query_selector('#NbCtrlBiobancoNodo1_ddListNodo').select_option(str(xpath))
             time.sleep(2)
             #DIGITAR PRONTUÁRIO
-            prontuario = load_data.carregaAmostras.loc[linha,"PRONTUARIO"]
+            prontuario = load_data.loadSamples.loc[linha,"PRONTUARIO"]
             noraybanks.waint_for_selector('#TxtCodDonante')
             noraybanks.locator('#TxtCodDonante').click()
             prontuario = str(int(sample.loc[linha, "PRONTUARIO"]))

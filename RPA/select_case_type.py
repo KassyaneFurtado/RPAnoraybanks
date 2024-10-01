@@ -1,10 +1,10 @@
 import time
 import load_data
 
-def selectCaseType(noraybanks, sample, positions, linha):
+def selectCaseType(noraybanks, samples, positions, line):
     # Selecionar tipo de caso
     if not positions.empty:
-        number = load_data.carregaPosicoes(sample, 'TIPOC', linha)
+        number = samples.loc[line, 'TIPOC']
         position = positions[positions['TIPO'] == number]
         print(f"Processando número: {number}")
         print(position)

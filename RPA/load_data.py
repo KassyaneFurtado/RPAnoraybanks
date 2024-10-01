@@ -1,12 +1,10 @@
-import pandas as pd
-planilha = pd.read_csv("CASES.csv")
-sample = pd.read_csv("SAMPLE.csv")
+from pandas import read_csv
 
-def carregaCasos():
-    return read_csv('CASES.csv')
-def carregaAmostras():
-    return read_csv('SAMPLE.csv')
+from os import getenv
 
-def carregaPosicoes():
-    return read_csv('POSITIONS.csv')
-    
+def loadCases():
+    return read_csv(getenv('CASES_CSV'))
+def loadSamples():
+    return read_csv(getenv('SAMPLES_CSV'))
+def loadPositions():
+    return read_csv(getenv('POSITIONS_CSV'))

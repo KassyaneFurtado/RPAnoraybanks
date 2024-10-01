@@ -1,9 +1,9 @@
 import time
 
-def selectSampleType(noraybanks, sample, positions, linha):
+def selectSampleType(noraybanks, samples, positions, line):
         
     if not positions.empty:
-                number = int(sample.loc[linha, 'TIPOA'])
+                number = int(samples.loc[line, 'TIPOA'])
                 position = positions[positions['TIPO'] == number]
                 print(f"Processando número: {number}")
                 print(position)
