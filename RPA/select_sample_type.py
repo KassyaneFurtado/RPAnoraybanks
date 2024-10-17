@@ -17,7 +17,8 @@ def selectSampleType(noraybanks, samples, positions, line):
         noraybanks.query_selector('#DDListTipoM').select_option(str(xpath))
     else:
         print(f"Posição não encontrada para o número {number}")
-        time.sleep(5) 
-        noraybanks.wait_for_selector('#BtnNewMuestra_jqbtn')        
-        noraybanks.locator('#BtnNewMuestra_jqbtn').click() #ADICIONAR AMOSTRA
         time.sleep(5)
+
+    noraybanks.wait_for_selector('#BtnNewMuestra_jqbtn')        
+    noraybanks.locator('#BtnNewMuestra_jqbtn').click() #ADICIONAR AMOSTRA
+    time.sleep(5)

@@ -13,6 +13,8 @@ from select_study_group import selectStudyGroup
 from select_case_type import selectCaseType
 from search_record import searchRecord
 from select_sample_type import selectSampleType
+from select_case import caseSelect
+from data_sample import sampleData
 
 load_dotenv()
 
@@ -30,9 +32,13 @@ with sync_playwright() as p:
             selectStudyGroup(noraybanks)
             selectCaseType(noraybanks, samples, positions, line)
             searchRecord(noraybanks, samples, line)
-            selectSampleType(noraybanks, samples, positions, line)
+            caseSelect (noraybanks)
             
-            time.sleep(5)
+            time.sleep(3)
+
+            selectSampleType(noraybanks, samples, positions, line)
+            sampleData(noraybanks, line)
+            time.sleep(2)
             
             noraybanks.wait_for_selector('#NbctrlPopup1_ButtonOk_jqbtn')
             noraybanks.locator('#NbctrlPopup1_ButtonOk_jqbtn').click()
