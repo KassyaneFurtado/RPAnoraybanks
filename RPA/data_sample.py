@@ -1,5 +1,4 @@
 import time
-import pyautogui
 import pandas as pd
 sample = pd.read_csv("SAMPLE.csv")
 
@@ -12,7 +11,7 @@ def sampleData(noraybanks, line):
         noraybanks.locator('#txtFechaObt').click()
         noraybanks.fill('#txtFechaObt', DATA)
     time.sleep(2)
-    pyautogui.click(x=985, y=478)
+    noraybanks.mouse.click(985, 478)
     time.sleep(10)
     noraybanks.wait_for_selector('#TxtCodMuestra')
     codbarras = noraybanks.query_selector('#TxtCodMuestra').input_value() #COPIAR COD DE AMOSTRA
@@ -33,7 +32,7 @@ def sampleData(noraybanks, line):
     time.sleep(1)
     noraybanks.locator('#DDListResponsable').select_option('2')
     time.sleep(1)
-    pyautogui.scroll(-500)
+    noraybanks.mouse.wheel(0, -500)
     time.sleep(5)
     if not pd.isnull(sample.loc[line, "OBS"]):
         noraybanks.locator('#TxtObs1').click()

@@ -1,5 +1,4 @@
 import time
-import load_data
 
 def selectCaseType(noraybanks, samples, positions, line):
     # Selecionar tipo de caso

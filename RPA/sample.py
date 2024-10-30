@@ -3,8 +3,6 @@ import time
 from playwright.sync_api import sync_playwright
 from dotenv import load_dotenv
 
-import pyautogui
-
 import navegador
 import utils
 import load_data
@@ -45,7 +43,7 @@ with sync_playwright() as p:
             
             time.sleep(7)
             
-            pyautogui.scroll(2000)
+            noraybanks.mouse.wheel(0, 2000)
             noraybanks.wait_for_selector('#wrapper-250')
 
     except Exception as e:

@@ -3,17 +3,16 @@ from playwright.sync_api import sync_playwright
 import os
 from dotenv import load_dotenv
 import pandas as pd
-import pyautogui
 import utils
 import navegador
-import RPA.load_data as load_data
+import load_data
 
 load_dotenv()
 login = os.getenv('LOGIN')
 password = os.getenv('PASSWORD')
-sample = load_data.loadSamples()
+samples = load_data.loadSamples()
 positions = load_data.loadPositions()
-
+cases = load_data.loadCases()
 #ABRINDO O NAVEGADOR 
 with sync_playwright() as p:
     noraybanks = utils.createBrowser(p)
@@ -21,7 +20,7 @@ with sync_playwright() as p:
     navegador.login(noraybanks)
 
     try:
-        for linha in sample.index:
+        for linha in cases.index:
             noraybanks.wait_for_selector('#wrapper-250 > ul > li.opt1 > a')
             noraybanks.locator('#wrapper-250 > ul > li.opt1 > a').click()  
             noraybanks.wait_for_selector('#wrapper-250 > ul > li.opt1 > ul > li.opt100 > a > span')
@@ -31,7 +30,7 @@ with sync_playwright() as p:
             time.sleep(5)
             noraybanks.wait_for_selector('#NbCtrlBiobancoNodo1_ddListNodo')
             noraybanks.locator('#NbCtrlBiobancoNodo1_ddListNodo').click()
-            number = load_data.pegaDado(sample, 'TIPOC', linha)
+            number = cases.loc[line, 'TIPOC']
             position = positions[positions['TIPO'] == number]
             print(f"Processando número: {number}")
             print(position)
@@ -48,7 +47,7 @@ with sync_playwright() as p:
             prontuario = load_data.loadSamples.loc[linha,"PRONTUARIO"]
             noraybanks.waint_for_selector('#TxtCodDonante')
             noraybanks.locator('#TxtCodDonante').click()
-            prontuario = str(int(sample.loc[linha, "PRONTUARIO"]))
+            prontuario = str(int(cases.loc[linha, "PRONTUARIO"]))
             noraybanks.fill('#TxtCodDonante', prontuario)
             #SELECIONAR TIPO DE PACIENTE
             noraybanks.locator('#DDListEspecie').select_option('2') 
@@ -72,7 +71,12 @@ with sync_playwright() as p:
             noraybanks.locator('#TxtHistoria').click()
             noraybanks.fill('#TxtHistoria', prontuario)
             noraybanks.locator('#DDSexo').click()
-            noraybanks.locator('#DDSexo').select_option(str(xpath)) #ADD SEXO MASCULINO E FEMINO NA PLANILHA DE CASOS
+            for line in cases.index:
+                if cases.loc[line, 'SEXO'] == 1:
+                    noraybanks.locator('#DDSexo').select_option('1')
+                else:
+                    noraybanks.locator('#DDSexo').select_option('2')
+                break
             #CADASTRAR DOAÇÃO
             noraybanks.locator('ImgNewDon').click()
             noraybanks.locator('#NbctrlPopup1_ButtonYes_jqbtn').click()
@@ -82,7 +86,12 @@ with sync_playwright() as p:
             noraybanks.fill('#txtReceptionDate', 'DATACOLETA')
             noraybanks.locator('#DdListConsentMuestras').select_option('1')
             noraybanks.locator('#DDListTipoCons').click()
-            noraybanks.locator('#DDListTipoCons').click().select_option(str(xpath)) #ADD TIPO DE TCLE NA PLANILHA BIOBANCO 1 PROJETO 2
+            for line in cases.index:
+                if cases.loc[line, 'TCLE'] == 1:
+                    noraybanks.locator('#DDListTipoCons').select_option('1')
+                else:
+                    noraybanks.locator('#DDListTipoCons').select_option('2')
+                break
             noraybanks.locator('#DdListConsentFirmado').click()
             noraybanks.locator('#DdListConsentFirmado').select_option('1')
             noraybanks.locator('#TxtFechaConsentFirma').click()

@@ -1,5 +1,6 @@
 import os
 from os import getenv
+
 def createBrowser(playwright):
     sitenoraybanks = os.getenv('NORAYBANKS_URL')
 
